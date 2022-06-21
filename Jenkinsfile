@@ -15,5 +15,12 @@ pipeline {
                 }
             }
         }
+        stage('Deploy stage') {
+            steps {
+               script{
+                    bat "xcopy /s ./Customer-service/*.war C:/tomcat/apache-tomcat-9.0.64/webapps"
+               }
+            }
+        }
     }
 }
