@@ -22,14 +22,5 @@ pipeline {
                 }
             }
         }
-        stage('Build docker images'){
-            steps{
-                script{
-                     bat "docker build -t img-pos-cust -f Customer-service/Dockerfile ."
-                     bat "docker build -t img-pos-inventory -f Inventory/Dockerfile ."
-                     bat "docker build -t img-pos-sales -f Sales/Dockerfile ."
-              }
-          }
-        }
     }
 }
