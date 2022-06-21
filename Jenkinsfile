@@ -19,7 +19,8 @@ pipeline {
             steps {
                script{
                    def cm = 'copy ".\\Customer-service\\target\\*.war" "C:\\tomcat\\apache-tomcat-9.0.64\\webapps"'
-                   bat ${cm}
+                   echo "${cm}"
+                   bat "${cm}"
                }
             }
         }
