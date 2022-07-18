@@ -2,12 +2,14 @@
 #  port: 9081
 
 spring:
+  #  main:
+  #    web-application-type: none
   application:
     name: customer-service
   datasource:
-    url: jdbc:mysql://localhost:6033/pos-customer
-    username: root
-    password: root
+    url: jdbc:mysql://database-pos.cqacoixsc0t7.us-east-1.rds.amazonaws.com:3306/pos-customer
+    username: admin
+    password: password
   jpa:
     show-sql: true
     hibernate:
@@ -20,15 +22,15 @@ spring:
         format_sql: true
         show-sql: true
         use_sql_comments: true
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: consumer-service
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
+#  kafka:
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      group-id: consumer-service
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      properties:
+#        spring.json.trusted.packages: "*"
 logging:
   level:
     org:
