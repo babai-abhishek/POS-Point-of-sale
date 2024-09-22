@@ -43,8 +43,17 @@ jobs:
 
       # Step 2: Install AWS CLI
       - name: Install AWS CLI
-        run: |
-          sudo apt-get install -y awscli       
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y awscli
+
+            - name: Debug Secrets
+              run: |
+                echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
+                echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
+              env:
+                AWS_REGION: ${{ secrets.AWS_REGION }}
+                AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
       # Step 3: Login to ECR
       - name: Login to Amazon ECR
