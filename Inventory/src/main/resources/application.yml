@@ -1,12 +1,18 @@
 server:
   port:  9082
+aws:
+  accessKey: ${AWS_ACCESS_KEY}
+  secretKey: ${AWS_SECRET_KEY}
+  region: us-east-1
+  secret:
+    name: ${SECRET_NAME}
 spring:
   application:
     name: inventory-service
   datasource:
-    url: jdbc:mysql://localhost:6035/pos-inventory
-    username: root
-    password: root
+    url: jdbc:mysql://database-pos.cximuuicmdxl.us-east-1.rds.amazonaws.com:3306/pos
+    username:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -18,3 +24,6 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         format_sql: true
         show-sql: true
+
+
+
