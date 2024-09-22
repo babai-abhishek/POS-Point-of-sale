@@ -30,7 +30,7 @@ jobs:
       - name: Build Docker image
         run: |
           cd Inventory  # Ensure you're in the Inventory directory
-          docker build -t inventory-docker .
+          docker build -t inventory-docker:latest .
 
   push-to-ecr:
     runs-on: ubuntu-latest
