@@ -32,15 +32,6 @@ jobs:
           cd Inventory  # Ensure you're in the Inventory directory
           docker build -t inventory-docker:latest .
 
-  push-to-ecr:
-    runs-on: ubuntu-latest
-    needs: build  # This job depends on the 'build' job
-
-    steps:
-      # Step 1: Check out the code (optional, needed for ECR login)
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       # Step 2: Install AWS CLI
       - name: Install AWS CLI
         run: |
