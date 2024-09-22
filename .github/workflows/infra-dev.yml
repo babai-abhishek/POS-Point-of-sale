@@ -1,0 +1,43 @@
+name: Build Docker Image for Inventory Module
+
+on:
+  push:
+    branches:
+      - develop-aws-infra  # Trigger on pushes to this branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up JDK 8
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+
+      # Step 3: Navigate to the Inventory module directory and build the JAR file using Maven
+      - name: Build Inventory Module
+        run: |
+          cd Inventory  # Navigate to the Inventory module
+          mvn clean package
+
+      # Step 4: Build the Docker image
+      - name: Build Docker image
+        run: |
+          cd Inventory  # Ensure you're in the Inventory directory
+          docker build -t inventory-docker .
+
+      # Optional: Uncomment to push the image to a Docker registry
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # - name: Push Docker image
+      #   run: docker push inventory-docker
