@@ -24,7 +24,7 @@ jobs:
       - name: Build Inventory Module
         run: |
           cd Inventory  # Navigate to the Inventory module
-          mvn clean package -DSkipTests
+          mvn clean install -DskipTests
 
       # Step 4: Build the Docker image
       - name: Build Docker image
