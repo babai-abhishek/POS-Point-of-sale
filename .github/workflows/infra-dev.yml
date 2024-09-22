@@ -41,7 +41,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Login to ECR
+      # Step 2: Install AWS CLI
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get install -y awscli       
+
+      # Step 3: Login to ECR
       - name: Login to Amazon ECR
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -50,12 +55,12 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      # Step 3: Tag the Docker image
+      # Step 4: Tag the Docker image
       - name: Tag Docker image
         run: |
           docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
 
-      # Step 4: Push the Docker image to ECR
+      # Step 5: Push the Docker image to ECR
       - name: Push Docker image
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
