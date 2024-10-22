@@ -32,7 +32,7 @@ jobs:
           cd Inventory  # Ensure you're in the Inventory directory
           docker build -t inventory-docker:latest .
 
-      # Step 2: Install AWS CLI
+      # Step 5: Install AWS CLI
       - name: Install AWS CLI
         run: |
           sudo apt-get update
@@ -46,7 +46,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-      # Step 3: Login to ECR
+      # Step 6: Login to ECR
       - name: Login to Amazon ECR
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -56,12 +56,12 @@ jobs:
           echo "Logging in to Amazon ECR..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-      # Step 4: Tag the Docker image
+      # Step 7: Tag the Docker image
       - name: Tag Docker image
         run: |
           docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
 
-      # Step 5: Push the Docker image to ECR
+      # Step 8: Push the Docker image to ECR
       - name: Push Docker image
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
