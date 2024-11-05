@@ -5,7 +5,7 @@ Parameters:
   BucketName:
     Type: String
     Description: Name of the Bucket to be created.
-    Default: MyBucket
+    Default: demobucket
 
 Resources:
   S3Bucket:
