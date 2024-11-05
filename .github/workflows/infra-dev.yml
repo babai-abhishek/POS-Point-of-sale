@@ -31,10 +31,10 @@ jobs:
         run: |
           aws cloudformation validate-template --template-body cloudformation\template.yml
 
-      # Step 5: Deploy the CloudFormation stack
-      - name: Deploy CloudFormation Stack
-        run: |
-          aws cloudformation deploy \
-            --template-file E:\My_IT_Study_Work\AWS\CFT/create-iam-user.yml \
-            --stack-name MyIAMUserStack \
-            --capabilities CAPABILITY_NAMED_IAM
+#      # Step 5: Deploy the CloudFormation stack
+#      - name: Deploy CloudFormation Stack
+#        run: |
+#          aws cloudformation deploy \
+#            --template-file E:\My_IT_Study_Work\AWS\CFT/create-iam-user.yml \
+#            --stack-name MyIAMUserStack \
+#            --capabilities CAPABILITY_NAMED_IAM
