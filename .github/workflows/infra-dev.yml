@@ -14,69 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-#      # Step 2: Set up JDK 8
-#      - name: Set up JDK 8
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: '8'
-#
-#      # Step 3: Navigate to the Inventory module directory and build the JAR file using Maven
-#      - name: Build Inventory Module
-#        run: |
-#          cd Inventory  # Navigate to the Inventory module
-#          mvn clean install -DskipTests
-#
-#      # Step 4: Build the Docker image
-#      - name: Build Docker image
-#        run: |
-#          cd Inventory  # Ensure you're in the Inventory directory
-#          docker build -t inventory-docker:latest .
-
       # Step 5: Install AWS CLI
       - name: Install AWS CLI
         run: |
           sudo apt-get update
           sudo apt-get install -y awscli
-          
-
-#      # Step 5: Install AWS CLI
-#      - name: Debug Secrets
-#        run: |
-#          echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
-#          echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
-#        env:
-#          AWS_REGION: ${{ secrets.AWS_REGION }}
-#          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-
-#      # Step 6: Login to ECR
-#      - name: Login to Amazon ECR
-#        env:
-#          AWS_REGION: ${{ secrets.AWS_REGION }}
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-#        run: |
-#          echo "Logging in to Amazon ECR..."
-#          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-#
-        # Step 3: Configure AWS credentials using secrets
-        - name: Configure AWS Credentials
-          uses: aws-actions/configure-aws-credentials@v2
-          with:
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-
-
-
-#      # Step 7: Tag the Docker image
-#      - name: Tag Docker image
-#        run: |
-#          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
-#
-#      # Step 8: Push the Docker image to ECR
-#      - name: Push Docker image
-#        run: |
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
+      # Step 3: Configure AWS credentials using secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
       # Step 4: Validate the CloudFormation template (optional)
       - name: Validate CloudFormation Template
