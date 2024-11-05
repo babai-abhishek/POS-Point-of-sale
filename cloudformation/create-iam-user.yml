@@ -13,7 +13,6 @@ Parameters:
     Default: arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
 
 Resources:
-  # IAM User
   IAMUser:
     Type: AWS::IAM::User
     Properties:
@@ -22,13 +21,11 @@ Resources:
       ManagedPolicyArns:
         - !Ref ManagedPolicyArn
 
-  # IAM User Access Key
   IAMUserAccessKey:
     Type: AWS::IAM::AccessKey
     Properties:
-      UserName: !Ref IAMUser
+      UserName: !Ref UserName
 
-  # IAM Policy (Custom policy if needed, attach it to the user)
   IAMPolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -44,7 +41,7 @@ Resources:
               - arn:aws:s3:::example-bucket
               - arn:aws:s3:::example-bucket/*
       Users:
-        - !Ref IAMUser
+        - !Ref UserName
 
 Outputs:
   AccessKeyId:
@@ -57,4 +54,4 @@ Outputs:
 
   IAMUserName:
     Description: Name of the created IAM user.
-    Value: !Ref IAMUser
+    Value: !Ref UserName
