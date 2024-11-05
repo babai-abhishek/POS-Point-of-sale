@@ -38,5 +38,5 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file cloudformation/template.yml \
-            --stack-name MyStack \
+            --stack-name MyDemoStack \
             --capabilities CAPABILITY_NAMED_IAM
