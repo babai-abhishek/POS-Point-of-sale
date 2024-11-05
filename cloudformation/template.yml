@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation template to create an IAM user with an attached managed policy and an access key.
+Description: CloudFormation template to create an s3 bucket.
 
 Parameters:
   BucketName:
@@ -7,7 +7,7 @@ Parameters:
     Description: Name of the Bucket to be created.
     Default: MyBucket
 
-Resources:Resources:
+Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
