@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop-aws-infra  # Trigger on pushes to this branch
-
 jobs:
   build:
     runs-on: ubuntu-latest
