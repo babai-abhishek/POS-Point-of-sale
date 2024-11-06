@@ -13,7 +13,7 @@ jobs:
       ECR_REPO_NAME: my-demo-ecr-repo  # Replace with the actual repository name if needed
 
     steps:
-#      #Create S3 bucket using cloudformation
+#      #########Create S3 bucket using cloudformation
 #      # Step 1: Check out the code
 #      - name: Checkout code
 #        uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
 
 
 
-      #Push docker image into ECR using cloudformation
+      ########Push docker image into ECR using cloudformation
       # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v2
@@ -126,11 +126,11 @@ jobs:
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
           docker login --username AWS --password-stdin $REPO_URI
 
-      # Step 12: Tag the Docker image
-      - name: Tag Docker image
-        run: |
-#          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
-          docker tag inventory-docker:latest
+      # Step 12: Tag the Docker image(Optional if you want to tag your existing image tag into new tag)
+#      - name: Tag Docker image
+#        run: |
+##          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
+#          docker tag inventory-docker:latest
 
       # Step 13 : Debug: List Docker images
       - name: List Docker images
