@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create an ECR repository.
+
+Parameters:
+  RepositoryName:
+    Type: String
+    Description: Name of the ECR repository
+    Default: my-demo-ecr-repo
+
+Resources:
+  MyECRRepository:
+    Type: 'AWS::ECR::Repository'
+    Properties:
+      RepositoryName: !Ref RepositoryName
+      ImageScanningConfiguration:
+        scanOnPush: true
+      EncryptionConfiguration:
+        EncryptionType: AES256  # Default encryption
+
+Outputs:
+  RepositoryUri:
+    Description: URI of the ECR repository
+    Value: !GetAtt MyECRRepository.RepositoryUri

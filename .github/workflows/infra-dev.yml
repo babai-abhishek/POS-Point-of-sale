@@ -9,18 +9,86 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ECR_REPO_NAME: my-demo-ecr-repo  # Replace with the actual repository name if needed
+
     steps:
+#      #Create S3 bucket using cloudformation
+#      # Step 1: Check out the code
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      # Step 2: Install AWS CLI
+#      - name: Install AWS CLI
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y awscli
+#
+#      # Step 3: Configure AWS credentials using secrets
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          aws-region: ${{ secrets.AWS_REGION }}
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+#
+#      # Step 4: Validate the CloudFormation template (optional)
+#      - name: Validate CloudFormation Template
+#        run: |
+#          aws cloudformation validate-template --template-body file://cloudformation/template.yml
+#
+#      # Step 5: Deploy the CloudFormation stack
+#      - name: Deploy CloudFormation Stack
+#        run: |
+#          aws cloudformation deploy \
+#            --template-file cloudformation/template.yml \
+#            --stack-name MyDemoStack \
+#            --capabilities CAPABILITY_NAMED_IAM
+
+
+
+      #Push docker image into ECR using cloudformation
       # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Install AWS CLI
+      # Step 2: Set up JDK 8
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+
+      # Step 3: Navigate to the Inventory module directory and build the JAR file using Maven
+      - name: Build Inventory Module
+        run: |
+          cd Inventory  # Navigate to the Inventory module
+          mvn clean install -DskipTests  
+
+      # Step 4: Build the Docker image
+      - name: Build Docker image
+        run: |
+           cd Inventory  # Ensure you're in the Inventory directory
+           docker build -t inventory-docker:latest .   
+
+      # Step 5: Install AWS CLI
       - name: Install AWS CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+           sudo apt-get update
+           sudo apt-get install -y awscli  
 
-      # Step 3: Configure AWS credentials using secrets
+      # Step 6: Debug the Secrets
+        - name: Debug Secrets
+          run: |
+            echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
+            echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
+          env:
+            AWS_REGION: ${{ secrets.AWS_REGION }}
+            AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+            SECRET_NAME : ${{ secrets.SECRET_NAME }}
+
+      # Step 7: Configure AWS credentials using GitHub secrets
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -28,15 +96,43 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
 
-      # Step 4: Validate the CloudFormation template (optional)
+      # Step 8: Validate the CloudFormation template (optional)
       - name: Validate CloudFormation Template
         run: |
-          aws cloudformation validate-template --template-body file://cloudformation/template.yml
+          aws cloudformation validate-template --template-body file://cloudformation/ecr-template.yml
 
-      # Step 5: Deploy the CloudFormation stack
+      # Step 9: Deploy the CloudFormation Stack to create the ECR repository
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
-            --template-file cloudformation/template.yml \
+            --template-file cloudformation/ecr-template.yml \
             --stack-name MyDemoStack \
+            --parameter-overrides RepositoryName=${{ env.ECR_REPO_NAME }} \
             --capabilities CAPABILITY_NAMED_IAM
+
+      # Step 10: Get the ECR repository URI from CloudFormation outputs
+      - name: Get ECR Repository URI
+        id: get-uri
+        run: |
+          REPO_URI=$(aws cloudformation describe-stacks \
+          --stack-name MyECRRepoStack \
+          --query "Stacks[0].Outputs[?OutputKey=='RepositoryUri'].OutputValue" \
+          --output text)
+          echo "REPO_URI=$REPO_URI" >> $GITHUB_ENV
+
+      # Step 11: Log in to ECR
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
+          docker login --username AWS --password-stdin $REPO_URI
+
+      # Step 12: Tag the Docker image
+      - name: Tag Docker image
+        run: |
+          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
+
+      # Step 13: Push the Docker image to ECR
+      - name: Push Docker Image to ECR
+        run: |
+          docker push $REPO_URI:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
