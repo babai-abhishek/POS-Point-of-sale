@@ -131,7 +131,12 @@ jobs:
 #        run: |
 #          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
 
-      # Step 13: Push the Docker image to ECR
+      # Step 13 : Debug: List Docker images
+        - name: List Docker images
+          run: |
+             docker images
+
+      # Step 14: Push the Docker image to ECR
       - name: Push Docker Image to ECR
         run: |
           docker push $REPO_URI:latest
