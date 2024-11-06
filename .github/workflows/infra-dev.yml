@@ -126,10 +126,10 @@ jobs:
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
           docker login --username AWS --password-stdin $REPO_URI
 
-      # Step 12: Tag the Docker image
-      - name: Tag Docker image
-        run: |
-          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
+#      # Step 12: Tag the Docker image
+#      - name: Tag Docker image
+#        run: |
+#          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
 
       # Step 13: Push the Docker image to ECR
       - name: Push Docker Image to ECR
