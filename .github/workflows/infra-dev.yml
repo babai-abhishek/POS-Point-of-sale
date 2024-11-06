@@ -115,7 +115,7 @@ jobs:
         id: get-uri
         run: |
           REPO_URI=$(aws cloudformation describe-stacks \
-          --stack-name MyECRRepoStack \
+          --stack-name MyDemoStack \
           --query "Stacks[0].Outputs[?OutputKey=='RepositoryUri'].OutputValue" \
           --output text)
           echo "REPO_URI=$REPO_URI" >> $GITHUB_ENV
