@@ -127,10 +127,10 @@ jobs:
           docker login --username AWS --password-stdin $REPO_URI
 
       # Step 12: Tag the Docker image(Optional if you want to tag your existing image tag into new tag)
-#      - name: Tag Docker image
-#        run: |
-##          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
-#          docker tag inventory-docker:latest
+      - name: Tag Docker image
+        run: |
+#          docker tag inventory-docker:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/pos:latest
+          docker tag inventory-docker:latest $REPO_URI:latest
 
       # Step 13 : Debug: List Docker images
       - name: List Docker images
@@ -140,4 +140,4 @@ jobs:
       # Step 14: Push the Docker image to ECR
       - name: Push Docker Image to ECR
         run: |
-          docker push inventory-docker:latest
+          docker push $REPO_URI:latest
