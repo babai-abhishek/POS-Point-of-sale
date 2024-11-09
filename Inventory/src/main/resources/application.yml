@@ -1,8 +1,8 @@
 server:
   port:  9082
 aws:
-  accessKey: ${AWS_ACCESS_KEY}
-  secretKey: ${AWS_SECRET_KEY}
+#  accessKey: ${AWS_ACCESS_KEY}
+#  secretKey: ${AWS_SECRET_KEY}
   region: us-east-1
   secret:
     name: ${SECRET_NAME}

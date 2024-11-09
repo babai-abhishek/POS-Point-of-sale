@@ -136,8 +136,6 @@ jobs:
         run: |
           docker tag inventory-docker:latest $REPO_URI:latest
 
-     
-
       # Step 14: Push the Docker image to ECR
       - name: Push Docker Image to ECR
         run: |
