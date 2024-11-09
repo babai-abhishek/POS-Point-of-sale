@@ -21,12 +21,6 @@ public class DatabaseConfig {
     @Value("${aws.region}")
     private String awsRegion;
 
-    @Value("${aws.accessKey}")
-    private String awsAccessKey;
-
-    @Value("${aws.secretKey}")
-    private String awsSecretKey;
-
     @Value("${aws.secret.name}")
     private String secretName;
 
@@ -38,8 +32,6 @@ public class DatabaseConfig {
         // Create a Secrets Manager client
         SecretsManagerClient secretsClient = SecretsManagerClient.builder()
                 .region(Region.of(awsRegion))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(awsAccessKey, awsSecretKey)))
                 .build();
 
         // Retrieve the secret value
