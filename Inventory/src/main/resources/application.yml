@@ -10,7 +10,7 @@ spring:
   application:
     name: inventory-service
   datasource:
-    url: jdbc:mysql://database-pos.cximuuicmdxl.us-east-1.rds.amazonaws.com:3306/pos
+    url: jdbc:mysql://my-poc-db.cximuuicmdxl.us-east-1.rds.amazonaws.com:3306/posdb
     username:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
