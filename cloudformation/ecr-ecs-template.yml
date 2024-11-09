@@ -46,14 +46,6 @@ Resources:
           PortMappings:
             - ContainerPort: 9082
               Protocol: tcp
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          Subnets:
-            - subnet-0a486b17b82bba64e  # Replace with actual subnet IDs
-          SecurityGroups:
-            - sg-08f2a63b879569d12     # Replace with actual security group IDs
-          AssignPublicIp: ENABLED
-
 ##  Output Section (part-3)
 #Outputs:
 #  RepositoryUri:
