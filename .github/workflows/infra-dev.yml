@@ -180,19 +180,19 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           SECRET_NAME: ${{ secrets.SECRET_NAME }}
 
-#      # Step 6: Configure AWS credentials using GitHub secrets
-#      - name: Configure AWS Credentials
-#        uses: aws-actions/configure-aws-credentials@v2
-#        with:
-#          aws-region: ${{ secrets.AWS_REGION }}
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+      # Step 6: Configure AWS credentials using GitHub secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
 
       # Step 7: Log in to Amazon ECR
-        - name: Log in to Amazon ECR
-          run: |
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
-            docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com"    
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
+          docker login --username AWS --password-stdin "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com"    
 
       # Step 8: Build the Docker image
       - name: Build Docker image
@@ -201,14 +201,14 @@ jobs:
           docker build -t ${{ env.ECR_DOC_IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
       # Step 9: Tag the image for ECR
-        - name: Tag Docker Image
-          run: |
-            docker tag ${{ env.ECR_DOC_IMAGE_NAME }}:${{ env.IMAGE_TAG }} "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:${{ env.IMAGE_TAG }}"
+      - name: Tag Docker Image
+        run: |
+          docker tag ${{ env.ECR_DOC_IMAGE_NAME }}:${{ env.IMAGE_TAG }} "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:${{ env.IMAGE_TAG }}"
 
       # Step 10: Push Docker image to ECR
-        - name: Push Docker Image to ECR
-          run: |
-           docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:${{ env.IMAGE_TAG }}"        
+      - name: Push Docker Image to ECR
+        run: |
+          docker push "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPO_NAME }}:${{ env.IMAGE_TAG }}"        
 
       # Step 11: Validate the CloudFormation template (optional)
       - name: Validate CloudFormation Template
