@@ -1,0 +1,61 @@
+# Resources Section (part-1)
+Resources:
+  # Create ECR Repository
+  MyECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: my-demo-ecr-repo-cft
+      ImageScanningConfiguration:
+        scanOnPush: true
+        EncryptionConfiguration:
+          EncryptionType: AES256  # Default encryption
+
+
+  # ECS Cluster
+  MyECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: pos-inventory-ecs-cluster-cft
+
+  # IAM Role for ECS Task Execution with access to ECR and Secrets Manager(Already created by user)
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ecsTaskExecutionRole
+
+  # Task Definition
+  MyTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: pos-inventory-task-definition-cft
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '256'  # Adjust CPU as needed
+      Memory: '512'  # Adjust memory as needed
+      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt pos-rds-role.Arn
+      ContainerDefinitions:
+        - Name: pos-inventory-docker-container-cft
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/my-demo-ecr-repo:latest"
+          Essential: true
+          Environment:
+            - Name: SECRET_NAME
+              Value: "rds!db-affb1879-e19b-4bd8-a2e2-c3ea8c6a035d"
+
+          PortMappings:
+            - ContainerPort: 9082
+              Protocol: tcp
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets:
+            - subnet-0a486b17b82bba64e  # Replace with actual subnet IDs
+          SecurityGroups:
+            - sg-08f2a63b879569d12     # Replace with actual security group IDs
+          AssignPublicIp: ENABLED
+
+#  Output Section (part-3)
+Outputs:
+  RepositoryUri:
+    Description: URI of the ECR repository
+    Value: !GetAtt MyECRRepository.RepositoryUri
