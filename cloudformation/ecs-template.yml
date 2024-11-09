@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  ECRRepoUrl:
+    Type: String
+    Description: 590183897518.dkr.ecr.us-east-1.amazonaws.com/my-demo-ecr-repo:latest
+
+Resources:
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: pos-inventory-ecs-cluster
+
+  ECSTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: pos-inventory-task-definition
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Cpu: '256'
+      Memory: '512'
+      ExecutionRoleArn: arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      ContainerDefinitions:
+        - Name: inventory-docker-container
+          Image: !Ref ECRRepoUrl
+          Essential: true
+          PortMappings:
+            - ContainerPort: 9082
+              Protocol: tcp
+
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      LaunchType: FARGATE
+      TaskDefinition: !Ref ECSTaskDefinition
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - sg-0123456789abcdefg  # Replace with a security group ID
+          Subnets:
+            - subnet-0123456789abcdef  # Replace with your subnet ID
