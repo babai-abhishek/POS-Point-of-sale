@@ -11,7 +11,7 @@ jobs:
 
     env:
       IMAGE_TAG: latest
-      ECR_REPO_NAME: my-demo-ecr-repo-cft  # Replace with the actual repository name if needed
+      ECR_REPO_NAME: my-demo-ecr-repo  # Replace with the actual repository name if needed
       ECR_DOC_IMAGE_NAME: pos-inventory-docker-image-cft
 
     steps:
@@ -215,12 +215,12 @@ jobs:
         run: |
           aws cloudformation validate-template --template-body file://cloudformation/ecr-ecs-template.yml
 
-      # Step 12: Deploy the CloudFormation Stack to create the ECR repository
+      # Step 12: Deploy the CloudFormation Stack to create the ECS part
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
             --template-file cloudformation/ecr-ecs-template.yml \
-            --stack-name MyDemoStack \
+            --stack-name MyDemoECSStack \
             --parameter-overrides RepositoryName=${{ env.ECR_REPO_NAME }} \
             --capabilities CAPABILITY_NAMED_IAM
 

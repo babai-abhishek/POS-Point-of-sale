@@ -1,14 +1,14 @@
 # Resources Section (part-1)
 Resources:
-  # Create ECR Repository
-  MyECRRepository:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: my-demo-ecr-repo-cft
-      ImageScanningConfiguration:
-        scanOnPush: true
-        EncryptionConfiguration:
-          EncryptionType: AES256  # Default encryption
+#  # Create ECR Repository
+#  MyECRRepository:
+#    Type: AWS::ECR::Repository
+#    Properties:
+#      RepositoryName: my-demo-ecr-repo-cft
+#      ImageScanningConfiguration:
+#        scanOnPush: true
+#        EncryptionConfiguration:
+#          EncryptionType: AES256  # Default encryption
 
 
   # ECS Cluster
@@ -54,8 +54,8 @@ Resources:
             - sg-08f2a63b879569d12     # Replace with actual security group IDs
           AssignPublicIp: ENABLED
 
-#  Output Section (part-3)
-Outputs:
-  RepositoryUri:
-    Description: URI of the ECR repository
-    Value: !GetAtt MyECRRepository.RepositoryUri
+##  Output Section (part-3)
+#Outputs:
+#  RepositoryUri:
+#    Description: URI of the ECR repository
+#    Value: !GetAtt MyECRRepository.RepositoryUri
