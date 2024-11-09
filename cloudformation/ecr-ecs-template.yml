@@ -18,10 +18,10 @@ Resources:
       ClusterName: pos-inventory-ecs-cluster-cft
 
   # IAM Role for ECS Task Execution with access to ECR and Secrets Manager(Already created by user)
-  ECSTaskExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: ecsTaskExecutionRole
+#  ECSTaskExecutionRole:
+#    Type: AWS::IAM::Role
+#    Properties:
+#      RoleName: ecsTaskExecutionRole
 
   # Task Definition
   MyTaskDefinition:
@@ -33,8 +33,8 @@ Resources:
         - FARGATE
       Cpu: '256'  # Adjust CPU as needed
       Memory: '512'  # Adjust memory as needed
-      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
-      TaskRoleArn: !GetAtt pos-rds-role.Arn
+      ExecutionRoleArn: arn:aws:iam::590183897518:role/ecsTaskExecutionRole
+      TaskRoleArn: arn:aws:iam::590183897518:role/pos-rds-role
       ContainerDefinitions:
         - Name: pos-inventory-docker-container-cft
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/my-demo-ecr-repo:latest"
