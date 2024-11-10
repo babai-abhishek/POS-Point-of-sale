@@ -15,7 +15,7 @@ jobs:
       ECR_DOC_IMAGE_NAME: pos-inventory-docker-image-cft
 
     steps:
-#      #########Create S3 bucket using cloudformation
+#      #########Create S3 bucket using cloudformation###########
 #      # Step 1: Check out the code
 #      - name: Checkout code
 #        uses: actions/checkout@v2
@@ -37,19 +37,19 @@ jobs:
 #      # Step 4: Validate the CloudFormation template (optional)
 #      - name: Validate CloudFormation Template
 #        run: |
-#          aws cloudformation validate-template --template-body file://cloudformation/template.yml
+#          aws cloudformation validate-template --template-body file://cloudformation/S3-template.yml
 #
 #      # Step 5: Deploy the CloudFormation stack
 #      - name: Deploy CloudFormation Stack
 #        run: |
 #          aws cloudformation deploy \
-#            --template-file cloudformation/template.yml \
+#            --template-file cloudformation/S3-template.yml \
 #            --stack-name MyDemoStack \
 #            --capabilities CAPABILITY_NAMED_IAM
 
 
 
-      ########Push docker image into ECR using cloudformation
+      ############Push docker image into ECR using cloudformation#############
 #      # Step 1: Check out the code
 #      - name: Checkout code
 #        uses: actions/checkout@v2
@@ -145,7 +145,7 @@ jobs:
 
 
 
-      #####Push docker image into ECR & run the container using ECS
+      #########Push docker image into ECR & run the container using ECS########
       # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v2

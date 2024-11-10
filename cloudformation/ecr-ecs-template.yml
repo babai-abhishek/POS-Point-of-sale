@@ -1,3 +1,6 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create ECS Cluster,ECS task definition(ECR repo is already created at before).
+
 # Resources Section (part-1)
 Resources:
 #  # Create ECR Repository
@@ -11,19 +14,13 @@ Resources:
 #          EncryptionType: AES256  # Default encryption
 
 
-  # ECS Cluster
+  # New ECS Cluster Create
   MyECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: pos-inventory-ecs-cluster-cft
 
-  # IAM Role for ECS Task Execution with access to ECR and Secrets Manager(Already created by user)
-#  ECSTaskExecutionRole:
-#    Type: AWS::IAM::Role
-#    Properties:
-#      RoleName: ecsTaskExecutionRole
-
-  # Task Definition
+  # New Task Definition create
   MyTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -46,8 +43,3 @@ Resources:
           PortMappings:
             - ContainerPort: 9082
               Protocol: tcp
-##  Output Section (part-3)
-#Outputs:
-#  RepositoryUri:
-#    Description: URI of the ECR repository
-#    Value: !GetAtt MyECRRepository.RepositoryUri

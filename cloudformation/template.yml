@@ -1,12 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation template to create an s3 bucket.
 
+# Parameters Section (part-1)
 Parameters:
   BucketName:
     Type: String
     Description: Name of the Bucket to be created.
     Default: my-demo-bucket
 
+# Resources Section (part-2)
 Resources:
   S3Bucket:
     Type: 'AWS::S3::Bucket'
